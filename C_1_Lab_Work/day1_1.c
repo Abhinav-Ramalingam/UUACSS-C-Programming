@@ -7,19 +7,15 @@ int fald(char* str){
     int i, num_arr[2] = {99, 99};
     for (i = 0; i < strlen(str); i++){
         if (isdigit(str[i])){
-            if (num_arr[1] == 99){
-                num_arr[1] = (int)(str[i]) - 48;
-            }
-            else if (num_arr[0] == 99){
-                num_arr[0] = num_arr[1];
-                num_arr[1] = (int)(str[i]) - 48;
+            if (num_arr[0] == 99){
+                num_arr[0] = (int)(str[i]) - 48;
             }
             else {
                 num_arr[1] = (int)(str[i]) - 48;
             }
         }
     }
-    if (num_arr[0] == 99) num_arr[0] = num_arr[1];
+    if (num_arr[1] == 99) num_arr[1] = num_arr[0];
     int result = 10*num_arr[0] + num_arr[1];
     printf("%d\n", result);
     return result;
