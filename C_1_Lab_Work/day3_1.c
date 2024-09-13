@@ -4,10 +4,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#define MATRIX_SIZE 140
+#define MATRIX_SIZE 200
 
 int isspec(char c){
-    return !isalnum(c) && c!='.';
+    return !isalnum(c) && c!='.' && c!='\n';
 }
 
 int pon(char matrix[][MATRIX_SIZE], int row, int col) {
@@ -41,9 +41,11 @@ int pon(char matrix[][MATRIX_SIZE], int row, int col) {
             else {
                 // If there's something in the buffer, process it
                 if (buf[0] != '\0') {
-                    printf("%s is a %d\n",buf, ntas);
+                    
                     if (ntas == 1) {
-                        sum += strtoll(buf,&endptr,10);  // Convert to integer and add to sum
+                        long long numsum = strtoll(buf,&endptr,10);
+                        //printf("%lld\n",numsum);
+                        sum += numsum;// Convert to integer and add to sum
                         ntas = 0;  // Reset special character flag
                     }
                     
@@ -85,6 +87,8 @@ int main() {
     // Read the file character by character
     while ((ch = fgetc(file)) != EOF && row < MATRIX_SIZE) {
         if (ch == '\n') {
+            // Insert explicit newline marker in the matrix
+            matrix[row][col] = '\n';  
             row++;      // Move to the next row when a newline is encountered
             col = 0;    // Reset column to 0
         } else if (col < MATRIX_SIZE) {
@@ -92,12 +96,19 @@ int main() {
             col++;
         }
     }
-    row++;
-    //print_matrix(matrix,row,col);
-    printf("Sum is %d\n",pon(matrix,row,col));
+
+    // If the file doesn't end with a newline, ensure to terminate the last row
+    if (col > 0) {
+        matrix[row][col] = '\n';  // Explicit newline marker for the last row if needed
+        row++;
+    }
+
+    // Print the matrix and calculate the sum
+    //print_matrix(matrix, row, col);
+    col++;
+    //printf("%d and %d\n", row, col);
+    printf("Sum is %d\n", pon(matrix, row, col));
+
     fclose(file);
-
-    
-
     return 0;
 }
