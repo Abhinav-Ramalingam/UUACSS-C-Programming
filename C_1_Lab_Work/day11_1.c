@@ -59,6 +59,50 @@ void print_matrix(char matrix[][MATRIX_SIZE], int row, int col) {
     }
 }
 
+// Function to check if a row is empty (all dots)
+int is_empty_row(char matrix[][MATRIX_SIZE], int row, int col) {
+    for (int j = 0; j < col; j++) {
+        if (matrix[row][j] == '#') {
+            return 0; // False
+        }
+    }
+    return 1; // True
+}
+
+// Function to check if a column is empty (all dots)
+int is_empty_column(char matrix[][MATRIX_SIZE], int row, int col_index) {
+    for (int i = 0; i < row; i++) {
+        if (matrix[i][col_index] == '#') {
+            return 0; // False
+        }
+    }
+    return 1; // True
+}
+
+// Function to insert an empty row at a specific position
+void insert_empty_row(char matrix[][MATRIX_SIZE], int *row, int col, int insert_at) {
+    for (int i = *row; i > insert_at; i--) {
+        for (int j = 0; j < col; j++) {
+            matrix[i][j] = matrix[i - 1][j];
+        }
+    }
+    for (int j = 0; j < col; j++) {
+        matrix[insert_at][j] = '.'; // Fill new row with dots
+    }
+    (*row)++; // Increase row count after insertion
+}
+
+// Function to insert an empty column at a specific position
+void insert_empty_column(char matrix[][MATRIX_SIZE], int row, int *col, int insert_at) {
+    for (int i = 0; i < row; i++) {
+        for (int j = *col; j > insert_at; j--) {
+            matrix[i][j] = matrix[i][j - 1];
+        }
+        matrix[i][insert_at] = '.'; // Fill new column with dots
+    }
+    (*col)++; // Increase column count after insertion
+}
+
 int main() {
     FILE *file;
     char matrix[MATRIX_SIZE][MATRIX_SIZE]; // 150x150 matrix of characters
@@ -66,7 +110,7 @@ int main() {
     int row = 0, col = 0;
 
     // Open the file for reading
-    file = fopen("C_1_Lab_Work/inputs/day3_Input.txt", "r");
+    file = fopen("C_1_Lab_Work/inputs/day11_Input.txt", "r");
     if (file == NULL) {
         printf("Error: Could not open file.\n");
         return 1;
@@ -90,11 +134,24 @@ int main() {
         row++;
     }
 
+    // Preprocessing: Find and insert empty rows
+    for (int i = row - 1; i >= 0; i--) {
+        if (is_empty_row(matrix, i, col)) {
+            insert_empty_row(matrix, &row, col, i);
+        }
+    }
+
+    // Preprocessing: Find and insert empty columns
+    for (int j = col - 1; j >= 0; j--) {
+        if (is_empty_column(matrix, row, j)) {
+            insert_empty_column(matrix, row, &col, j);
+        }
+    }
+
     // Print the matrix and calculate the sum
-    //print_matrix(matrix, row, col);
     printf("%d and %d\n", row, col);
-    int count = populate_galval(matrix, row, col);
-    int sum = compute_sum(count);
+    int count = populate_galval(matrix, row, col); // Your existing populate_galval function
+    int sum = compute_sum(count); // Your existing compute_sum function
     printf("Sum is %d\n", sum);
 
     fclose(file);

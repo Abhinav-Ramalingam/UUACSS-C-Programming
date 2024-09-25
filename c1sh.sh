@@ -1,4 +1,4 @@
 # File to run programs. Will change Everytime
 
-gcc -w -o C_1_Output/day3_2 C_1_Lab_Work/day3_2.c
-./C_1_Output/day3_2 > output.txt
+gcc -w -o C_1_Output/day11_1 C_1_Lab_Work/day11_1.c
+./C_1_Output/day11_1 > output.txt

@@ -1,4 +1,4 @@
-140 and 140
+147 and 147
 Count of galaxies found: 444
 For j=1 - 0,444 taken
 For j=2 - 1,444 taken
@@ -445,4 +445,4 @@ For j=442 - 441,444 taken
 For j=443 - 442,444 taken
 For j=444 - 443,444 taken
 Total pairs processed: 98346
-Sum is 9286518
+Sum is 9799681
