@@ -1,4 +1,4 @@
-//Problem_3
+//Problem_3.1
 
 #include <stdio.h>
 #include <string.h>
