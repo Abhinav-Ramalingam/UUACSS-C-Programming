@@ -6,14 +6,8 @@
 
 #define MATRIX_SIZE 150
 #define MAX_GALAXIES 19600 // Adjust this based on the expected number of galaxies
-#define MAX_EMPTY_LINES 150 // Maximum size for empty lines array
-#define MAX_EMPTY_COLUMNS 150 // Maximum size for empty columns array
 
 int galval[MAX_GALAXIES][2]; // 2D array to store (i, j) coordinates of '#' positions
-int empty_rows[MAX_EMPTY_LINES]; // Array to store indices of empty rows
-int empty_columns[MAX_EMPTY_COLUMNS]; // Array to store indices of empty columns
-int empty_row_count = 0; // Count of empty rows
-int empty_column_count = 0; // Count of empty columns
 
 int populate_galval(char matrix[][MATRIX_SIZE], int row, int col) {
     int i, j, count = 0;
@@ -29,45 +23,30 @@ int populate_galval(char matrix[][MATRIX_SIZE], int row, int col) {
             }
         }
     }
-    printf("Count of galaxies found: %d\n", count);
+    //printf("Count of galaxies found: %d\n", count);
     return count;
 }
 
 int compute_sum(int count) {
     int sum = 0;
     int pair_count = 0;
-    int i, j;
+    int i,j;
 
     for (i = 0; i < count; i++) {
         j = i + 1;
-        printf("For j=%d - ", j);
+        //printf("For j=%d - ", j);
         for (; j < count; j++) {
             pair_count++;
             // Calculate the absolute differences between coordinates
             int abs_diff_i = abs(galval[i][0] - galval[j][0]); // Row difference
             int abs_diff_j = abs(galval[i][1] - galval[j][1]); // Column difference
-            
-            // Base distance
+          
             sum += (abs_diff_i + abs_diff_j);
-
-            // Check for empty rows between the two galaxies
-            for (int l = 0; l < empty_row_count; l++) {
-                if (min(galval[i][0], galval[j][0]) < empty_rows[l] && empty_rows[l] < max(galval[i][0], galval[j][0])) {
-                    sum += 999999; // Add penalty for empty row
-                }
-            }
-
-            // Check for empty columns between the two galaxies
-            for (int c = 0; c < empty_column_count; c++) {
-                if (min(galval[i][1], galval[j][1]) < empty_columns[c] && empty_columns[c] < max(galval[i][1], galval[j][1])) {
-                    sum += 999999; // Add penalty for empty column
-                }
-            }
         }
-        printf("%d,%d taken\n", i, j);
+        //printf("%d,%d taken\n", i, j);
     }
 
-    printf("Total pairs processed: %d\n", pair_count);
+    //printf("Total pairs processed: %d\n", pair_count);
     return sum;
 }
 
@@ -158,21 +137,19 @@ int main() {
     // Preprocessing: Find and insert empty rows
     for (int i = row - 1; i >= 0; i--) {
         if (is_empty_row(matrix, i, col)) {
-            empty_rows[empty_row_count++] = i; // Store index of empty row
-            // Do not insert another empty row
+            insert_empty_row(matrix, &row, col, i);
         }
     }
 
     // Preprocessing: Find and insert empty columns
     for (int j = col - 1; j >= 0; j--) {
         if (is_empty_column(matrix, row, j)) {
-            empty_columns[empty_column_count++] = j; // Store index of empty column
-            // Do not insert another empty column
+            insert_empty_column(matrix, row, &col, j);
         }
     }
 
     // Print the matrix and calculate the sum
-    printf("%d and %d\n", row, col);
+    //printf("%d and %d\n", row, col);
     int count = populate_galval(matrix, row, col); // Your existing populate_galval function
     int sum = compute_sum(count); // Your existing compute_sum function
     printf("Sum is %d\n", sum);

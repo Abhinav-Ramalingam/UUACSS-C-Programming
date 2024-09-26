@@ -19,7 +19,7 @@ int fald(char* str){
     }
     if (num_arr[1] == 99) num_arr[1] = num_arr[0];
     int result = 10*num_arr[0] + num_arr[1];
-    printf("%d\n", result);
+    //printf("%d\n", result);
     return result;
 }
 

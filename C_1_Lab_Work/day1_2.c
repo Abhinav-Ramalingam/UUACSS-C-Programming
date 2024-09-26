@@ -67,7 +67,7 @@ int main() {
 
         // Add the result of fald() to the sum
         sum += fald(str);
-        printf("result done in %d\n", (++count));
+        //printf("result done in %d\n", (++count));
     }
 
     // Close the file after reading
