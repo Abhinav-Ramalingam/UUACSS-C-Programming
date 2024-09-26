@@ -1,0 +1,1 @@
+Total sum from processed lines: 1053
